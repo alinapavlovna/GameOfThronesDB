@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import './itemDetails.css';
-import gotService from '../../services/gotService';
-import Spinner from '../spinner';
-import Error from '../error'
+
 
 const Field = ({item, field, label}) => {
 
@@ -19,7 +17,6 @@ export {Field};
 
 export default class ItemDetails extends Component {
 
-    //gotService = new gotService();
 
     state = {
         item: null

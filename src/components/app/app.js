@@ -4,12 +4,11 @@ import Header from '../header';
 import RandomChar from '../randomChar';
 import './button.css'
 import Error from '../error';
-import CharacterPage from '../pages/characterPage';
 import ItemList from '../itemList';
 import ItemDetails from '../itemDetails';
 import gotService from '../../services/gotService';
-import { BooksPage, HousesPage } from '../pages';
-
+import {CharacterPage, BooksPage, HousesPage, BookItem } from '../pages';
+import {BrowserRouter as Router, Route} from 'react-router-dom';
 
 export default class App extends Component {
 
@@ -42,7 +41,8 @@ export default class App extends Component {
         const renderRandomChar = this.state.show ? <RandomChar /> : null;
 
         return (
-            <> 
+           <Router>
+                <div class='app'> 
                 <Container>
                     <Header />
                 </Container>
@@ -55,41 +55,19 @@ export default class App extends Component {
                             {renderRandomChar}
                         </Col>
                     </Row>
-                    <CharacterPage/>
-                    <BooksPage/>
-                    <HousesPage/>
-
-                    {/* <Row>
-                        <Col md='6'>
-                            <ItemList 
-                                onItemSelected={this.onItemSelected}
-                                getData={this.gotService.getAllBooks}
-                                renderItem={(item) => item.name}/>
-                                
-                        </Col>
-                        <Col md='6'>
-                            <ItemDetails 
-                                itemId={this.props.bookId}
-                                getData={this.gotService.getBook}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md='6'>
-                            <ItemList 
-                                onItemSelected={this.onItemSelected}
-                                getData={this.gotService.getAllHouses}
-                                renderItem={(item) => item.name}/>
-                        </Col>
-                        <Col md='6'>
-                            <ItemDetails 
-                                itemId={this.props.houseId}
-                                getData={this.gotService.getHouse}/>
-                        </Col>
-                    </Row>
-                    */}
+                    <Route path='/characters' component={CharacterPage}/>
+                    <Route path='/books' exact component={BooksPage}/>
+                    <Route path='/houses' component={HousesPage}/>
+                    <Route path='/books/:id' render = {
+                        ({match}) => {
+                            const {id} = match.params;
+                            return <BookItem bookId={id}/>
+                        }
+                    }/>
 
                 </Container>
-            </>
+            </div>
+           </Router>
         );
     }
 }
