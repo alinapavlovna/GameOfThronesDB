@@ -4,8 +4,6 @@ import Header from '../header';
 import RandomChar from '../randomChar';
 import './button.css'
 import Error from '../error';
-import ItemList from '../itemList';
-import ItemDetails from '../itemDetails';
 import gotService from '../../services/gotService';
 import {CharacterPage, BooksPage, HousesPage, BookItem } from '../pages';
 import {BrowserRouter as Router, Route} from 'react-router-dom';

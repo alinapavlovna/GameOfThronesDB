@@ -1,9 +1,7 @@
 import React, {Component} from 'react';
 import ItemList from '../itemList';
-import ItemDetails, {Field} from '../itemDetails';
 import Error from '../error';
 import gotService from '../../services/gotService';
-import RowBlock from '../rowBlock';
 import {withRouter} from 'react-router-dom';
 
  class BooksPage extends Component {
