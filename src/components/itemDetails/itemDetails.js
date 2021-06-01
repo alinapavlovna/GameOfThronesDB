@@ -1,6 +1,7 @@
-import React, {Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import './itemDetails.css';
-
+import Error from '../error/error';
+import Spinner from '../spinner/spinner';
 
 const Field = ({item, field, label}) => {
 
@@ -15,91 +16,72 @@ const Field = ({item, field, label}) => {
 export {Field};
 
 
-export default class ItemDetails extends Component {
+//описываем компонент ItemDetails с помощью хуков
+
+let itemIdLast;
+
+ function ItemDetails({itemId, getData, children}) {
+
+    const [item, update_Item] = useState(null);
+    const [loading, setLoading] = useState(true); 
+    const [error, setError] = useState(false); 
 
 
-    state = {
-        item: null
-        // loading: true,
-        // error: false
-    }
-
-    componentDidMount(){
-        this.updateItem();
-    }   
-
-    componentDidUpdate(prevProps){
-        if(this.props.itemId !== prevProps.itemId){
-            this.updateItem();
-        }
-    }
+    useEffect(() => {
+        updateItem();
+    }, [itemId]);
 
 
-    updateItem(){
-        const {itemId, getData} = this.props;
+    function updateItem(){
 
-        if(!itemId) return;
+        if(itemId !== itemIdLast) {
+            if(!itemId) return;
 
-        // this.setState({
-        //     loading: true
-        // })
-
-        getData(itemId)
-            .then(item => {
-            this.setState({item})
-        })
-            // .then(this.onCharDetailsLoaded)
-            // .catch(() => this.onError())
-            
-        // this.foo.bar = 0;
-    }
-
-    // onError () {
-    //     this.setState({
-    //         char: null,
-    //         error: true
-    //     })
-    // }
-
-    // onCharDetailsLoaded = (char) => {
-    //     this.setState({
-    //         char,
-    //         loading: false
-    //     })
-    // }
-   
-    render() {
-
-        // if(!this.state.item && this.state.error){
-        //     return <Error/>
-        // } else 
+                setLoading(true);
         
-        if(!this.state.item){
-            return <span className="select-error">Please select an item from the list</span>
+                getData(itemId)
+                    .then(item => {
+                    update_Item(item);
+                })
+                .then(() => setLoading(false))
+                .catch( () => setError(true));
+
+                return () => {
+                    itemIdLast = itemId;
+                }
         }
+    }
+    
+   if(!item && error){
+        return <Error/>
+   }
 
-        const {name} = this.state.item;
-        const {item} = this.state;
+    if(!item){
+        return <span className="select-error">Please select an item from the list</span>
+    }
 
-        // if(this.state.loading){
-        //     return (
-        //         <div className="char-details rounded">
-        //             <Spinner/>
-        //         </div>
-        //     )
-        // }
-
+    if(loading){
         return (
             <div className="char-details rounded">
-                <h4>{name}</h4>
-                <ul className="list-group list-group-flush">
-                    {
-                        React.Children.map(this.props.children, (child) => {
-                            return React.cloneElement(child, {item})
-                        })
-                    }
-                </ul>
+                <Spinner/>
             </div>
-        );
+        )
     }
+
+    const {name} = item;
+    return (
+        <div className="char-details rounded">
+            <h4>{name}</h4>
+            <ul className="list-group list-group-flush">
+                {
+                    React.Children.map(children, (child) => {
+                        return React.cloneElement(child, {item})
+                    })
+                }
+            </ul>
+        </div>
+    );
+    
 }
+
+export default ItemDetails;

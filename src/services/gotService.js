@@ -63,24 +63,28 @@ export default class GotService {
     }
 
     _transformHouse = (house) => {
+        const noData = 'data is not found';
+
         return {
             id: this._extractId(house),
-            name: house.name,
-            region: house.region,
-            words: house.words,
-            titles: house.titles,
-            overlord: house.overlord,
-            ancestralWeapons: house.ancestralWeapons
+            name: house.name !== '' ? house.name : noData,
+            region: house.region !== '' ? house.region : noData,
+            words: house.words !== '' ? house.words : noData,
+            titles: house.titles !== '' ? house.titles : noData,
+            overlord: house.overlord !== '' ? house.overlord : noData,
+            ancestralWeapons: house.ancestralWeapons !== '' ? house.ancestralWeapons : noData
         }
     }
 
     _transformBook = (book) => {
+        const noData = 'data is not found';
+
         return {
             id: this._extractId(book),
-            name: book.name,
-            numberOfPages: book.numberOfPages,
-            publiser: book.publiser,
-            released: book.released
+            name: book.name !== '' ? book.name : noData,
+            numberOfPages: book.numberOfPages !== '' ? book.numberOfPages : noData,
+            publisher: book.publiser !== '' ? book.publisher : noData,
+            released: book.released !== '' ? book.released : noData
         }
     }
 

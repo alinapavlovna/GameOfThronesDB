@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import './itemDetails.css';
 
-
 const Field = ({item, field, label}) => {
 
     return (
